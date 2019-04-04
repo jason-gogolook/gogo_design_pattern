@@ -11,9 +11,19 @@ class Player:
         print(f'{self.name} defense')
 
 
-# TODO: impolement PlayerTranslator
+class PlayerTranslator(Player):
+    def __init__(self, player, name):
+        super().__init__(name)
+        self.player = player
 
-class ChinsesPlayer:
+    def attack(self):
+        self.player.gong_ji()
+
+    def defense(self):
+        self.player.fang_shou()
+
+
+class ChinesePlayer:
     def __init__(self, name):
         self.name = name
 
@@ -27,15 +37,12 @@ class ChinsesPlayer:
 if __name__ == '__main__':
     Jeff = Player('Jeff')
     CJ = Player('CJ')
-    shiang = ChinsesPlayer('香香')
+    shiang = PlayerTranslator(ChinesePlayer('香香'))
 
     Jeff.attack()
     CJ.attack()
-    # TODO: call shiang to attack
-
+    shiang.attack()
 
     Jeff.defense()
     CJ.defense()
-    # TODO: call shiang to defense
-
-
+    shiang.defense()
