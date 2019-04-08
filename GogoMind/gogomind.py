@@ -1,6 +1,7 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from model import MindMapModel
 
 import os
 import sys
@@ -47,6 +48,7 @@ class MainWindow(QMainWindow):
         layout = QVBoxLayout()
         self.scene = MapScene()
         self.scene_view = QGraphicsView(self.scene)
+        self.model = MindMapModel()
 
         # self.path holds the path of the currently open file.
         # If none, we haven't got a file open yet (or creating new).
@@ -155,31 +157,37 @@ class MainWindow(QMainWindow):
         self.show()
 
         ### Just for demo
-        root = MapItem(0, 0, 'Computer <Root, ID:0>')
-        self.scene.addItem(root)
+        # root = MapItem(0, 0, 'Computer <Root, ID:0>')
+        # node = MapItem(300, 0, 'OS <Node, ID:1>')
+        # node2 = MapItem(300, 150, 'Network <Node, ID:2>')
+        # line1 = QGraphicsLineItem(50, 50, 350, 50)
+        # line2 = QGraphicsLineItem(200, 50, 300, 200)
 
-        node = MapItem(300, 0, 'OS <Node, ID:1>')
-        self.scene.addItem(node)
-        line1 = QGraphicsLineItem(50, 50, 350, 50)
-        self.scene.addItem(line1)
+        # node3 = MapItem(600, 0, 'MacOS <Node, ID:3>')
+        # line3 = QGraphicsLineItem(350, 50, 600, 50)
+        # self.scene.addItem(node3)
+        # self.scene.addItem(line3)
 
-        node2 = MapItem(300, 150, 'Network <Node, ID:2>')
-        self.scene.addItem(node2)
-        line2 = QGraphicsLineItem(200, 50, 300, 200)
-        self.scene.addItem(line2)
-
-        node3 = MapItem(600, 0, 'MacOS <Node, ID:3>')
-        line3 = QGraphicsLineItem(350, 50, 600, 50)
-        self.scene.addItem(node3)
-        self.scene.addItem(line3)
-        #
+        # self.scene.addItem(line1)
+        # self.scene.addItem(line2)
+        # self.scene.addItem(root)
+        # self.scene.addItem(node)
+        # self.scene.addItem(node2)
         ###
 
     def insert_node_dialog(self):
-        node_id, okPressed = QInputDialog.getText(self, "Insert a node", "Node ID to append", QLineEdit.Normal, "")
-        print(node_id)
-        node_desc, okPressed = QInputDialog.getText(self, "Insert a node", "New node description:", QLineEdit.Normal, "")
-        print(node_desc)
+        tmp_node_id = None
+
+        node_id, okPressed = QInputDialog.getText(self, "Insert a node", "Node ID:", QLineEdit.Normal, "")
+        if okPressed and node_id != '':
+            ## insert a new node
+            print('id is = ' + node_id)
+            tmp_node_id = node_id
+
+        node_desc, okPressed = QInputDialog.getText(self, "Insert a node", "Node description:", QLineEdit.Normal, "")
+        if okPressed and node_desc != '':
+            print('desc is ' + node_desc)
+            self.model.insert_node(tmp_node_id, node_desc)
 
     def dialog_critical(self, s):
         dlg = QMessageBox(self)
